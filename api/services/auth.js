@@ -9,16 +9,13 @@ function setToken(user){
         email: user.email,
         role: user.role
     }
-    const token = jwt.sign(payload, PRIVATE_KEY);
-    
-    return token;
+    return jwt.sign(payload, PRIVATE_KEY);
 }
 
 function validateToken(token){
     if(!token) return null;
     try{
-        const authenticate = jwt.verify(token, PRIVATE_KEY);
-        return authenticate;
+        return jwt.verify(token, PRIVATE_KEY);
     }catch(error){
         return null;
     }

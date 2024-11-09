@@ -7,6 +7,7 @@ import Login from './components/login';
 import Dashboard from './components/dashboard/index';
 import Signup from './components/signup';
 import Home from './components/home';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
     {
@@ -14,23 +15,23 @@ const router = createBrowserRouter([
         element: <Login/>
     },
     {
-      path: '/signup',
-      element: <Signup/>
+        path: '/signup',
+        element: <Signup/>
     },
     {
-      path: '/dashboard',
-      element:<Dashboard/>
+        path: '/dashboard',
+        element: <Dashboard/>
     },
     {
-        path:'/',
-        element:<Home/>
+        path: '/',
+        element: <Home/>
     }
 ])
 
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router}/>
-  </React.StrictMode>
+    <React.StrictMode>
+        <RouterProvider router={router}/>
+    </React.StrictMode>
 );
 
 reportWebVitals();
