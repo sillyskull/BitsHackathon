@@ -1,4 +1,4 @@
-const {validateToken} = require('../server/auth.js');
+const {validateToken} = require('../services/auth.js');
 
 function checkAuthentication(req, res, next){
     const token = req.cookies["token"]? req.cookies["token"]: null

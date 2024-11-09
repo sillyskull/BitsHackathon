@@ -8,6 +8,7 @@ const path = require('path');
 const {MONGO_URL} = require('./config.js');
 const userRoutes = require('./routes/user.js');
 const staticRoutes = require('./routes/static.js');
+const dashboardRoutes = require('./routes/dashboard.js');
 
 mongoose.connect(MONGO_URL)
 .then(()=> console.log("Successfully Established connection to DataBase."))
@@ -32,7 +33,7 @@ app.use('/UserUploads', express.static(path.join(__dirname, 'UserUploads')));
 //API routes
 app.use('/', staticRoutes);
 app.use('/user', userRoutes);
-
+app.use('/dashboard', dashboardRoutes);
 
 app.listen(PORT, ()=>{
     console.log(`Server Running on PORT: ${PORT}.`);

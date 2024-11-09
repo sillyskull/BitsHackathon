@@ -87,7 +87,6 @@ function getUserDetails(req, res){
     return res.json(user);
 }
 
-
 module.exports= {
     handleLogin,
     handleSignUp,
