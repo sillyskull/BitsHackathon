@@ -1,95 +1,95 @@
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .dashboard {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .navbar {
-  width: 100%;
-  background-color: #007bff;
-  color: #ffffff;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  z-index: 1;
+    width: 100%;
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 1;
 }
 
 .navbar a {
-  color: #ffffff;
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: background 0.3s;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background 0.3s;
 }
 
 .navbar a:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 .heading {
-  text-align: center;
-  margin: 100px 20px 20px;
-  color: #333333;
-  font-size: 2.5em;
+    text-align: center;
+    margin: 100px 20px 20px;
+    color: #333333;
+    font-size: 2.5em;
 }
 
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  padding: 40px;
-  flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    padding: 40px;
+    flex-grow: 1;
 }
 
 .box {
-  background-color: #ffffff;
-  width: 300px;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  padding: 40px;
-  text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+    background-color: #ffffff;
+    width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    padding: 40px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .box:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .box h3 {
-  color: #333;
-  font-size: 1.6em;
-  margin-bottom: 25px;
+    color: #333;
+    font-size: 1.6em;
+    margin-bottom: 25px;
 }
 
 .btn {
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
-  font-size: 1.1em;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 1.1em;
 }
 
 .btn:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }

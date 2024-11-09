@@ -78,7 +78,10 @@ const Signup = () => {
                 </div>
                 <button type="submit" className="btn">Signup</button>
                 <div className="register-link">
-                    <p>Already have an Account? <a href="#" onClick={(e) => { e.preventDefault(); window.location.href = '/login'; }}>Login</a></p>
+                    <p>Already have an Account? <a href="#" onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = '/login';
+                    }}>Login</a></p>
                 </div>
             </form>
         </div>

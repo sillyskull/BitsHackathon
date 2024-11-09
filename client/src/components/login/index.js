@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import './index.css';
 import 'boxicons/css/boxicons.min.css';
 import { getCookie } from '../../miniFunctions/cookie-parser';
@@ -55,6 +55,7 @@ const Login = () => {
                         placeholder="Username"
                         required
                     />
+                    <input type="text" placeholder="Username" required/>
                     <i className='bx bxs-user'></i>
                 </div>
                 <div className="input-box">
@@ -70,7 +71,10 @@ const Login = () => {
                 </div>
                 <button type="submit" className="btn">Login</button>
                 <div className="register-link">
-                    <p>Don't have an Account? <a href="#" onClick={(e) => { e.preventDefault(); window.location.href = '/signup'; }}>Signup</a></p>
+                    <p>Don't have an Account? <a href="#" onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = '/signup';
+                    }}>Signup</a></p>
                 </div>
             </form>
         </div>

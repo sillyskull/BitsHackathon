@@ -6,8 +6,7 @@ function checkAuthentication(req, res, next){
     req.user = null;
   
     if(!token) return next();
-    const user = validateToken(token);
-    req.user = user;
+    req.user = validateToken(token);
     return next();     
 }
 
