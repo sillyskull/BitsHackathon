@@ -1,32 +1,72 @@
 import React, { useState } from 'react';
 import './index.css';
 import 'boxicons/css/boxicons.min.css';
+import { getCookie } from '../../miniFunctions/cookie-parser';
+import { useNavigate} from "react-router-dom";
 
 const Login = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
     };
 
+    const handleLogin = async (event) => {
+        event.preventDefault();
+        
+        const username = document.querySelector("#login-field-username").value;
+        const password = document.querySelector("#login-field-password").value;
+        
+        try {
+            const response = await fetch('http://localhost:8000/login', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username, 
+                    password: password 
+                })
+            });
+
+            const data = await response.json();
+            console.log(data);
+
+            if (getCookie("token")) {
+                navigate('/dashboard');
+            }
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+            setError(error.message);
+        }
+    };
+
     return (
         <div className="login-container">
-            <form id="loginForm" className="login-form">
+            <form id="loginForm" className="login-form" onSubmit={handleLogin}>
                 <h1>Login</h1>
                 <div className="input-box">
-                    <input type="text" placeholder="Username" required />
+                    <input
+                        type="text"
+                        id="login-field-username"
+                        placeholder="Username"
+                        required
+                    />
                     <i className='bx bxs-user'></i>
                 </div>
                 <div className="input-box">
                     <input
                         type={passwordVisible ? "text" : "password"}
-                        id="password"
+                        id="login-field-password"
                         placeholder="Password"
                         required
                     />
                     <span className="eye" onClick={togglePasswordVisibility}>
-            <i className={`bx ${passwordVisible ? 'bxs-hide' : 'bxs-show'}`}></i>
-          </span>
+                        <i className={`bx ${passwordVisible ? 'bxs-hide' : 'bxs-show'}`}></i>
+                    </span>
                 </div>
                 <button type="submit" className="btn">Login</button>
                 <div className="register-link">
@@ -38,4 +78,3 @@ const Login = () => {
 };
 
 export default Login;
-

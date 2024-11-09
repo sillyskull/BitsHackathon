@@ -1,7 +1,10 @@
 import React from "react";
 import "./styles.css";
+import { useServerUser } from "../../contextStore/serverUserContext";
 
 export default function Dashboard() {
+  const serverUser = useServerUser();
+
   const uploadFile = (id) => {
     document.getElementById(`fileUpload${id}`).click();
   };
