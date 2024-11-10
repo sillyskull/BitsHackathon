@@ -1,214 +1,189 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "./styles.css";
 import { useServerUser } from "../../contextStore/serverUserContext";
-import { deleteCookie } from "../../miniFunctions/cookie-parser";
+import { useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
-  const serverUser = useServerUser();
-  const navigate = useNavigate();
+function Dashboard() {
+    const [formData, setFormData] = useState({
+        fullName: "",
+        age: "",
+        gender: "",
+        premedicalConditions: "",
+        testType: "",
+        image: null,
+    });
+    const [errors, setErrors] = useState({});
+    const serverUser = useServerUser();
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    fullName: "",
-    age: "",
-    gender: "",
-    premedicalConditions: "",
-    testType: "",
-    image: null,
-  });
-  const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    if (!serverUser) {
-      navigate("/login");
-    }
-  }, [serverUser, navigate]);
-
-  const handleLogout = () => {
-    deleteCookie("token");
-    navigate("/login");
-  };
-
-  const validateForm = () => {
-    const errors = {};
-    if (!formData.fullName || /\d/.test(formData.fullName)) errors.fullName = "Full name cannot contain numbers";
-    if (!formData.age || isNaN(formData.age) || formData.age <= 0) errors.age = "Please enter a valid age";
-    if (!formData.gender) errors.gender = "Please select a gender";
-    if (!formData.testType) errors.testType = "Please select a test type";
-    return errors;
-  };
-
-  const handleChange = ({ target: { name, value } }) => {
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    resizeImage(file);
-  };
-
-  const handleImageDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    resizeImage(file);
-  };
-
-  // Function to resize the image before displaying it
-  const resizeImage = (file) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const img = new Image();
-      img.src = reader.result;
-
-      img.onload = () => {
-        // Create a canvas to resize the image
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-
-        // Set the new image dimensions
-        const maxWidth = 300;  // Max width of the image container
-        const maxHeight = 300; // Max height of the image container
-        let width = img.width;
-        let height = img.height;
-
-        // Calculate the new dimensions while keeping the aspect ratio
-        if (width > maxWidth || height > maxHeight) {
-          const ratio = Math.min(maxWidth / width, maxHeight / height);
-          width = width * ratio;
-          height = height * ratio;
+    useEffect(() => {
+        if (serverUser) {
+            setUser(serverUser);
+        } else {
+            navigate('/');
         }
+    }, [serverUser, navigate]);
 
-        // Resize the image
-        canvas.width = width;
-        canvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height);
-
-        // Convert the resized image to data URL and set it to formData
-        const resizedImage = canvas.toDataURL("image/jpeg");
-        setFormData((prevData) => ({
-          ...prevData,
-          image: resizedImage,  // Save the resized image as base64
-        }));
-      };
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
     };
-    reader.readAsDataURL(file);
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length) {
-      setErrors(validationErrors);
-      return;
-    }
-    setErrors({});
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData({ ...formData, image: reader.result });
+            };
+            reader.readAsDataURL(file);  // Convert image to base64
+        }
+    };
 
-    const formDataToSend = new FormData();
-    Object.entries(formData).forEach(([key, value]) => formDataToSend.append(key, value));
-    formDataToSend.append("user", JSON.stringify(serverUser)); 
-    
-    try {
-      const response = await fetch("http://localhost:8000/dashboard/uploads", {
-        method: "POST",
-        credentials: "include",
-        body: formDataToSend, 
-      });
-      
-      const data = await response.json();
-      console.log("Server response:", data);
-    } catch (error) {
-      console.error("Error uploading data:", error);
-    }
-  };
+    const handleImageDrop = (event) => {
+        event.preventDefault();
+        const file = event.dataTransfer.files[0];
+        if (file && file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData({ ...formData, image: reader.result });
+            };
+            reader.readAsDataURL(file);  // Convert image to base64
+        }
+    };
 
-  return (
-    <div className="dashboard">
-      <div className="navbar">
-        <div className="title">Medical H5</div>
-        <button className="logout" onClick={handleLogout}>Logout</button>
-      </div>
+    const handleSubmit = (event) => {
+        event.preventDefault();
 
-      <h1 className="heading">Medical H5</h1>
+        // Construct the data object for JSON
+        const data = {
+            fullName: formData.fullName,
+            age: formData.age,
+            gender: formData.gender,
+            premedicalConditions: formData.premedicalConditions,
+            testType: formData.testType,
+            image: formData.image,  // base64 image string
+            user,
+        };
 
-      <form onSubmit={handleSubmit} className="medical-form">
-        {[{ label: "Full Name", type: "text", name: "fullName", error: errors.fullName },
-          { label: "Age", type: "number", name: "age", error: errors.age }].map(({ label, type, name, error }) => (
-          <div className="form-group" key={name}>
-            <label>{label}:</label>
-            <input type={type} name={name} value={formData[name]} onChange={handleChange} required />
-            {error && <span className="error">{error}</span>}
-          </div>
-        ))}
+        console.log(data);
 
-        <div className="form-group">
-          <label>Gender:</label>
-          {["Male", "Female", "Other"].map((gender) => (
-            <label key={gender}>
-              <input
-                type="radio"
-                name="gender"
-                value={gender}
-                onChange={handleChange}
-                checked={formData.gender === gender}
-              />
-              {gender}
-            </label>
-          ))}
-          {errors.gender && <span className="error">{errors.gender}</span>}
+        fetch("http://localhost:8000/dashboard/uploads", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+                alert("Form submitted successfully!");
+            })
+            .catch((err) => console.error("Error:", err));
+    };
+
+    return (
+        <div className="container">
+            <div className="dashboard">
+                <div className="navbar">
+                    <div className="title">Medical H5</div>
+                    <button className="logout" onClick={() => navigate('/')}>Logout</button>
+                </div>
+                <h1 className="heading">Medical H5</h1>
+                <form onSubmit={handleSubmit} className="medical-form">
+                    <div className="form-group">
+                        <label>Full Name:</label>
+                        <input
+                            type="text"
+                            name="fullName"
+                            value={formData.fullName}
+                            onChange={handleChange}
+                            required
+                        />
+                        {errors.fullName && <span className="error">{errors.fullName}</span>}
+                    </div>
+                    <div className="form-group">
+                        <label>Age:</label>
+                        <input
+                            type="number"
+                            name="age"
+                            value={formData.age}
+                            onChange={handleChange}
+                            required
+                        />
+                        {errors.age && <span className="error">{errors.age}</span>}
+                    </div>
+                    <div className="form-group">
+                        <label>Gender:</label>
+                        {["Male", "Female", "Other"].map(gender => (
+                            <label key={gender}>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value={gender}
+                                    onChange={handleChange}
+                                    checked={formData.gender === gender}
+                                />
+                                {gender}
+                            </label>
+                        ))}
+                        {errors.gender && <span className="error">{errors.gender}</span>}
+                    </div>
+                    <div className="form-group">
+                        <label>Premedical Conditions:</label>
+                        <input
+                            type="text"
+                            name="premedicalConditions"
+                            value={formData.premedicalConditions}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Test Type:</label>
+                        {["MRI", "CTSCAN", "X-Ray"].map(test => (
+                            <label key={test}>
+                                <input
+                                    type="radio"
+                                    name="testType"
+                                    value={test}
+                                    onChange={handleChange}
+                                    checked={formData.testType === test}
+                                />
+                                {test}
+                            </label>
+                        ))}
+                        {errors.testType && <span className="error">{errors.testType}</span>}
+                    </div>
+                    <div className="form-group">
+                        <label>Upload Image:</label>
+                        <div
+                            className="image-upload-box"
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={handleImageDrop}
+                            onClick={() => document.getElementById("fileInput").click()}
+                        >
+                            {formData.image ? (
+                                <img src={formData.image} alt="Uploaded" className="uploaded-image" />
+                            ) : (
+                                <p>Drag and drop an image, or click to select one</p>
+                            )}
+                            <input
+                                type="file"
+                                id="fileInput"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                style={{ display: "none" }}
+                            />
+                        </div>
+                    </div>
+                    <button type="submit" className="btn">Submit</button>
+                </form>
+            </div>
         </div>
-
-        <div className="form-group">
-          <label>Premedical Conditions:</label>
-          <input
-            type="text"
-            name="premedicalConditions"
-            value={formData.premedicalConditions}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Test Type:</label>
-          {["MRI", "CTSCAN", "X-Ray"].map((test) => (
-            <label key={test}>
-              <input
-                type="radio"
-                name="testType"
-                value={test}
-                onChange={handleChange}
-                checked={formData.testType === test}
-              />
-              {test}
-            </label>
-          ))}
-          {errors.testType && <span className="error">{errors.testType}</span>}
-        </div>
-
-        <div className="form-group">
-          <label>Upload Image:</label>
-          <div
-            className="image-upload-box"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={handleImageDrop}
-            onClick={() => document.getElementById("fileInput").click()}
-          >
-            {formData.image ? (
-              <img src={formData.image} alt="Uploaded" className="uploaded-image" />
-            ) : (
-              <p>Drag and drop an image, or click to select one</p>
-            )}
-            <input
-              type="file"
-              id="fileInput"
-              accept="image/*"
-              onChange={handleImageChange}
-              style={{ display: "none" }}
-            />
-          </div>
-        </div>
-
-        <button type="submit" className="btn">Submit</button>
-      </form>
-    </div>
-  );
+    );
 }
+
+export default Dashboard;

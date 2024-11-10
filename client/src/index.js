@@ -4,7 +4,7 @@ import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import Login from './components/login';
-import Dashboard from './components/dashboard/index';
+import Dashboard from "./components/dashboard/index";
 import Signup from './components/signup';
 import Home from './components/home';
 import { ServerUserProvider } from './contextStore/serverUserContext';
