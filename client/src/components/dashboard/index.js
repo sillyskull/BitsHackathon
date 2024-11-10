@@ -102,7 +102,6 @@ function Dashboard() {
         <div className="container">
             <div className="dashboard">
                 <div className="navbar">
-                    <div className="title">Medical H5</div>
                     <button className="logout" onClick={() => navigate('/')}>Logout</button>
                 </div>
                 <h1 className="heading">Fill this form</h1>
