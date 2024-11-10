@@ -1,17 +1,13 @@
 const mongoose = require('mongoose');
 
-const imageSchema = mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        refs: "users"
-    },
-    uploaded_image_path: {
-        type: String,
-        required: true
-    }
-}, {timestamps: true});
+const medicalDataSchema = new mongoose.Schema({
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    fullName: { type: String, required: true },
+    age: { type: Number, required: true },
+    gender: { type: String, required: true },
+    premedicalConditions: { type: String, default: '' },
+    testType: { type: String, required: true },
+    uploaded_image_path: { type: String, required: true }, // path to the uploaded image
+}, { timestamps: true });
 
-const Image = mongoose.model('image', imageSchema);
-
-module.exports = Image;
+module.exports = mongoose.model('MedicalData', medicalDataSchema);

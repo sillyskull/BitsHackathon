@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './index.css';
 import 'boxicons/css/boxicons.min.css';
 import { getCookie } from '../../miniFunctions/cookie-parser';
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -35,12 +35,15 @@ const Login = () => {
             const data = await response.json();
             console.log(data);
 
+            // Check for the token after the login attempt
             if (getCookie("token")) {
-                navigate('/dashboard');
+                navigate('/dashboard');  // Redirect to dashboard on successful login
+            } else {
+                setError("Login failed: Invalid credentials or server error.");
             }
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
-            setError(error.message);
+            setError("There was an issue with the login request.");
         }
     };
 
@@ -55,7 +58,6 @@ const Login = () => {
                         placeholder="Username"
                         required
                     />
-                    <input type="text" placeholder="Username" required/>
                     <i className='bx bxs-user'></i>
                 </div>
                 <div className="input-box">
@@ -70,6 +72,7 @@ const Login = () => {
                     </span>
                 </div>
                 <button type="submit" className="btn">Login</button>
+                {error && <div className="error-message">{error}</div>}  {/* Display error message if any */}
                 <div className="register-link">
                     <p>Don't have an Account? <a href="#" onClick={(e) => {
                         e.preventDefault();

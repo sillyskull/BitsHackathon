@@ -1,95 +1,170 @@
+/* Dashboard.css */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
+/* Dashboard container */
 .dashboard {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 100px; /* Adjusted for navbar height */
+  flex: 1;
+  justify-content: center;
+  min-height: 100vh;
 }
 
+/* Navbar styles */
 .navbar {
-    width: 100%;
-    background-color: #007bff;
-    color: #ffffff;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    z-index: 1;
+  width: 100%;
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 10;
 }
 
-.navbar a {
-    color: #ffffff;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: background 0.3s;
-}
-
-.navbar a:hover {
-    background-color: #0056b3;
-}
-
+/* Heading styles */
 .heading {
-    text-align: center;
-    margin: 100px 20px 20px;
-    color: #333333;
-    font-size: 2.5em;
+  color: #333333;
+  margin: 0;
+  padding: 20px 0;
+  font-size: 2em;
+  text-align: center;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    flex-wrap: wrap;
-    padding: 40px;
-    flex-grow: 1;
+/* Form container */
+.medical-form {
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  margin-top: 40px;
 }
 
-.box {
-    background-color: #ffffff;
-    width: 300px;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    padding: 40px;
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
+/* Form group styling */
+.form-group {
+  margin-bottom: 20px;
 }
 
-.box:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+/* Label styling */
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
 }
 
-.box h3 {
-    color: #333;
-    font-size: 1.6em;
-    margin-bottom: 25px;
+/* Input styling */
+input[type="text"],
+input[type="number"],
+input[type="radio"],
+input[type="file"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 8px;
 }
 
-.btn {
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s;
-    font-size: 1.1em;
+input[type="radio"] {
+  width: auto;
 }
 
-.btn:hover {
-    background-color: #0056b3;
+/* Error message */
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+/* Styling for radio buttons */
+.radio-label {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.radio-label input {
+  margin-right: 5px;
+}
+
+/* Image upload box */
+.image-upload-box {
+  padding: 20px;
+  border: 2px dashed #007bff;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease, border 0.3s ease;
+}
+
+/* Hover and focus effects for image upload box */
+.image-upload-box:hover,
+.image-upload-box:focus {
+  background-color: #e3f2fd;
+  border-color: #0056b3;
+}
+
+/* Uploaded image display */
+.uploaded-image {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  margin-top: 10px;
+}
+
+/* Button styling */
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Responsiveness */
+@media (max-width: 600px) {
+  .medical-form {
+      width: 90%;
+      max-width: none;
+      padding: 20px;
+  }
+
+  .navbar {
+      flex-direction: column;
+      padding: 10px;
+  }
+
+  .heading {
+      font-size: 1.5em;
+  }
+
+  .image-upload-box {
+      width: 100%;
+      padding: 15px;
+  }
 }
