@@ -1,0 +1,14 @@
+{
+  "name": "hack",
+  "version": "1.4.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm-run-all --parallel start:app start:server start:client",
+    "web": "npm-run-all --parallel start:server start:client",
+    "start:app": "cd api\\flask && python app.py",
+    "start:server": "cd api && npm start",
+    "start:client": "cd client && npm start"
+  },
+  "private": true
+}

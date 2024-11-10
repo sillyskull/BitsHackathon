@@ -1,6 +1,5 @@
 const express = require('express');
 
-//controller imports
 const {handleLogin, handleSignUp} = require('../controllers/user');
 
 const router = express.Router();
