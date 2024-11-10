@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
-import {useServerUser} from "../../contextStore/serverUserContext";
-import {useNavigate} from "react-router-dom";
+import { useServerUser } from "../../contextStore/serverUserContext";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 
 function Dashboard() {
@@ -29,8 +29,8 @@ function Dashboard() {
     }, [serverUser, navigate]);
 
     const handleChange = (event) => {
-        const {name, value} = event.target;
-        setFormData({...formData, [name]: value});
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleImageChange = (event) => {
@@ -38,9 +38,9 @@ function Dashboard() {
         if (file && file.type.startsWith("image/")) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setFormData({...formData, image: reader.result.split(',')[1]}); // Store base64 data without the prefix
+                setFormData({ ...formData, image: reader.result.split(',')[1] });
             };
-            reader.readAsDataURL(file);  // Convert image to base64
+            reader.readAsDataURL(file);
         }
     };
 
@@ -50,23 +50,21 @@ function Dashboard() {
         if (file && file.type.startsWith("image/")) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setFormData({...formData, image: reader.result.split(',')[1]}); // Store base64 data without the prefix
+                setFormData({ ...formData, image: reader.result.split(',')[1] });
             };
-            reader.readAsDataURL(file);  // Convert image to base64
+            reader.readAsDataURL(file);
         }
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        // Construct the data object for JSON
         const data = {
             fullName: formData.fullName,
             age: formData.age,
             gender: formData.gender,
             premedicalConditions: formData.premedicalConditions,
             testType: formData.testType,
-            image: formData.image,  // base64 image string without prefix
+            image: formData.image,
             user,
         };
 
@@ -90,7 +88,7 @@ function Dashboard() {
             setIsModalOpen(true);
         } catch (err) {
             console.error("Error while processing image:", err);
-            setErrors({submit: "An error occurred while processing the image. Please try again."});
+            setErrors({ submit: "An error occurred while processing the image. Please try again." });
         }
     };
 
@@ -186,8 +184,7 @@ function Dashboard() {
                             onClick={() => document.getElementById("fileInput").click()}
                         >
                             {formData.image ? (
-                                <img src={`data:image/jpeg;base64,${formData.image}`} alt="Uploaded"
-                                     className="uploaded-image"/>
+                                <img src={`data:image/jpeg;base64,${formData.image}`} alt="Uploaded" className="uploaded-image" />
                             ) : (
                                 <p>Drag and drop an image, or click to select one</p>
                             )}
@@ -196,7 +193,7 @@ function Dashboard() {
                                 id="fileInput"
                                 accept="image/*"
                                 onChange={handleImageChange}
-                                style={{display: "none"}}
+                                style={{ display: "none" }}
                             />
                         </div>
                     </div>
@@ -208,8 +205,7 @@ function Dashboard() {
                 <h2>Processed Image</h2>
                 <div className="modal-content">
                     {processedImage && (
-                        <img src={`data:image/jpeg;base64,${processedImage}`} alt="Processed"
-                             className="processed-image"/>
+                        <img src={`data:image/jpeg;base64,${processedImage}`} alt="Processed" className="processed-image" />
                     )}
                     <div className="client-info">
                         <p><strong>Full Name:</strong> {formData.fullName}</p>

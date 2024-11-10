@@ -2,7 +2,9 @@ from flask import Flask, request, jsonify
 import os
 import base64
 from flask_cors import CORS
+from api.flask.report import generate_brain_tumor_mri_report
 from mi import image_processing_mri, image_processing_ctscan, image_processing_xray
+from flask import send_file
 
 app = Flask(__name__)
 CORS(app)
@@ -51,6 +53,51 @@ def process_image():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/download-pdf', methods=['POST'])
+def download_pdf():
+    try:
+        # Extract form data from the request
+        data = request.get_json()
+        full_name = data.get('fullName')
+        age = data.get('age')
+        gender = data.get('gender')
+        premedical_conditions = data.get('premedicalConditions')
+        test_type = data.get('testType')
+        processed_image_path = os.path.join(PROCESSED_FOLDER, f"{full_name}_{test_type}_processed.png")
+        # Ensure that the processed image path exists
+        if not os.path.exists(processed_image_path):
+            return jsonify({'error': 'Processed image not found'}), 404
+
+        # Generate the PDF report
+        pdf_filename = f"{full_name}_MRI_Report.pdf"
+        generate_brain_tumor_mri_report(
+            filename=pdf_filename,
+            report_title_text="Brain Tumor MRI Report",
+            patient_name=full_name,
+            patient_info_data=[
+                ["Age:", age],
+                ["Gender:", gender],
+                ["Relevant Medical History:", premedical_conditions]
+            ],
+            mri_findings_data=[
+                ["Test Type:", test_type],
+                ["Findings:", "Example MRI findings."]
+            ],
+            mri_image_path=processed_image_path,
+            impressions_text="The MRI scan shows...",
+            recommendations_text="Follow-up recommendations.",
+            conclusion_text="Conclusion of the report.",
+            logo_path="logo.png"
+        )
+
+        # Return the generated PDF file for download
+        return send_file(pdf_filename, as_attachment=True)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
 
 
 if __name__ == '__main__':
