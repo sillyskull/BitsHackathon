@@ -26,7 +26,7 @@
 .title {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #fff;
+    color: #fff!important;
 }
 
 .logout {
