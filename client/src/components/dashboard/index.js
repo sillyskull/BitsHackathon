@@ -105,7 +105,7 @@ function Dashboard() {
                     <div className="title">Medical H5</div>
                     <button className="logout" onClick={() => navigate('/')}>Logout</button>
                 </div>
-                <h1 className="heading">Medical H5</h1>
+                <h1 className="heading">Description</h1>
                 <div className="form-and-image-container">
                     <div className="form-container">
                         <form onSubmit={handleSubmit} className="medical-form">
