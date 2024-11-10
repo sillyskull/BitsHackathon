@@ -7,6 +7,9 @@ const MedicalData = require('../models/image'); // Ensure this is the correct mo
 
 async function handleUploads(req, res) {
     try {
+        // Dynamically import node-fetch
+        const fetch = (await import('node-fetch')).default;
+
         // Parse incoming JSON body
         const {
             fullName,
@@ -72,9 +75,33 @@ async function handleUploads(req, res) {
 
         await newMedicalData.save();
 
+        // Send the data to the Flask API
+        const response = await fetch('http://localhost:5000/api/upload', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                fullName,
+                age,
+                gender,
+                premedicalConditions,
+                testType,
+                imagePath, // Send the image path
+                userId: user._id,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Flask API error: ${response.statusText}`);
+        }
+
+        const flaskResponse = await response.json();
+
         return res.json({
             msg: "Successfully received and stored medical data along with the image",
             file: imagePath,
+            flaskResponse, // Include the Flask API response in your final output
         });
 
     } catch (error) {
