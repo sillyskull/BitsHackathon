@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./styles.css";
-import { useServerUser } from "../../contextStore/serverUserContext";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
@@ -13,17 +12,8 @@ function Dashboard() {
         image: null,
     });
     const [errors, setErrors] = useState({});
-    const serverUser = useServerUser();
-    const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (serverUser) {
-            setUser(serverUser);
-        } else {
-            navigate('/');
-        }
-    }, [serverUser, navigate]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -64,7 +54,6 @@ function Dashboard() {
             premedicalConditions: formData.premedicalConditions,
             testType: formData.testType,
             image: formData.image,  // base64 image string
-            user,
         };
 
         console.log(data);
@@ -90,7 +79,6 @@ function Dashboard() {
             <div className="dashboard">
                 <div className="navbar">
                     <div className="title">Medical H5</div>
-                    <button className="logout" onClick={() => navigate('/')}>Logout</button>
                 </div>
                 <h1 className="heading">Medical H5</h1>
                 <form onSubmit={handleSubmit} className="medical-form">

@@ -1,30 +1,26 @@
-# app.py
 from flask import Flask, request, jsonify, redirect
 from werkzeug.utils import secure_filename
 import os
-import requests
 import traceback
 
-# Import different image processing functions based on test type
+# Import image processing functions based on test type
 from mi import image_processing_mri, image_processing_ctscan, image_processing_xray
 
-app = Flask(_name_)
+app = Flask(__name__)
 
-# Configure upload folder
+# Configure upload folders
 UPLOAD_FOLDER = 'uploads/'
 PROCESSED_FOLDER = 'processed/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['PROCESSED_FOLDER'] = PROCESSED_FOLDER
 
-# Ensure the upload folders exist
+# Ensure upload folders exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
-
-# Allowed extensions for the uploaded files
+# Allowed file extensions for uploaded files
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'jpg', 'jpeg', 'png'}
-
 
 @app.route('/api/upload', methods=['POST'])
 def upload():
@@ -35,7 +31,6 @@ def upload():
         gender = request.form.get('gender')
         premedical_conditions = request.form.get('premedicalConditions')
         test_type = request.form.get('testType')
-        user_info = request.form.get('user')
 
         # Extract and save the image file
         if 'image' not in request.files:
@@ -80,6 +75,5 @@ def upload():
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
-
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -16,8 +16,7 @@ function App() {
                 </p>
             </header>
             <div className="buttons">
-                <button className="button login" onClick={() => navigate('/login')}>Login</button>
-                <button className="button signup" onClick={() => navigate('/signup')}>Sign Up</button>
+                <button className="button login" onClick={() => navigate('/dashboard')}>Signin as Guest</button>
             </div>
         </div>
     );

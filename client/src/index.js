@@ -7,7 +7,6 @@ import Login from './components/login';
 import Dashboard from "./components/dashboard/index";
 import Signup from './components/signup';
 import Home from './components/home';
-import { ServerUserProvider } from './contextStore/serverUserContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
@@ -31,9 +30,7 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <ServerUserProvider>
       <RouterProvider router={router} />
-    </ServerUserProvider>
   </React.StrictMode>);
 
 reportWebVitals();
