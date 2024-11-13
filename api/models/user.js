@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Define user schema
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -23,7 +22,6 @@ const userSchema = new mongoose.Schema({
     }
 }, {timestamps: true}); // Auto-generate createdAt and updatedAt timestamps
 
-// Export the user model
 User = mongoose.model('user', userSchema);
 
 module.exports = User;

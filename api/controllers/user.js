@@ -3,7 +3,6 @@ const {setToken, validateToken} = require('../services/auth');
 
 async function handleLogin(req, res) {
     const {username, password} = req.body;
-    // Use 'findOne' to get a single user instead of 'find', which returns an array
     const user = await User.findOne({
         username: username,
 
